@@ -1,41 +1,26 @@
 <div class="chat-header">
   <div class="left-header">
-    <div class="chatroom-name">room-name</div>
+    <div class="chatroom-name">
+      <%= @room.name %>
+    </div>
   </div>
   <div class="right-header">
-    <a href="#">チャットを終了する</a>
+    <%= link_to 'チャットを終了する', room_path(@room), data: { turbo_method: :delete } %>
   </div>
 </div>
 
 <div class="messages">
-  <div class="message">
-   <div class="message-box">
-     <div class="message-name">Tom</div>
-     <div class="message-data">2024/04/27 (sat) 12:34:56</div>
-   </div>
-   <div class="message-contents">
-     <div class="chat-message">おはよう</div>
-   </div>
-  </div>
-  <div class="message">
-   <div class="message-box">
-     <div class="message-name">Tom</div>
-     <div class="message-data">2024/04/27 (sat) 12:34:56</div>
-   </div>
-   <div class="message-contents">
-     <div class="chat-message">おはよう</div>
-   </div>
-  </div>
+  <%= render partial: 'message', collection: @messages %>
 </div>
 
 
-
-<div class="chat-footer">
+<%= form_with model: [@room, @message], html: {class: "form"}, local: true do |f| %>
   <div class="form-input">
-    <input class="type-message" placeholder="type a message">
+    <%= f.text_field :content, class: 'type-message', placeholder:"type a message" %>
     <label class="form-image">
       <span class="image-file">画像</span>
-      <input type="file" class="hidden">
+      <%= f.file_field :image, class: "hidden" %>
+      </label>
   </div>
-  <input type="submit", value="送信" class="message-send">
-</div>
+  <%= f.submit "送信", class: "message-send" %>
+<% end %>
